@@ -1,0 +1,10 @@
+" Press ? for help
+
+.. (up a dir)
+</sesion5/ejemplo4/
+  mariadb-deployment.yaml
+  mariadb-secret.yaml
+  mariadb-srv.yaml
+  wordpress-deployment.yaml
+  wordpress-ingress.yaml
+  wordpress-srv.yaml
