@@ -1,7 +1,7 @@
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:
-  namespace: office
+  namespace: proyecto1
   name: deployment-manager
 rules:
 - apiGroups: ["", "extensions", "apps"]
