@@ -1,4 +1,4 @@
 # GrupoID_k8s_2019
 
-Ficheros ejemplos del curso de Kuberenetes (Junio, 2019).
+Ficheros ejemplos del curso de Kubernetes (Junio, 2019).
 
