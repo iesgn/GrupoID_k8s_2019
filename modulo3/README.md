@@ -174,4 +174,6 @@ Ahora vamos a deplegar una versión que da un error (versión no existe). ¿Poed
     kubectl create -f redis-master-deployment.yaml
     kubectl create -f redis-slave-deployment.yaml
 
+    kubectl port-forward deployment/guestbook 3000:3000
+
 
