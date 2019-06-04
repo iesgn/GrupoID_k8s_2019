@@ -124,7 +124,7 @@ Por ejemplo para hacer una actualización de la aplicación:
 
 * `kubectl set image deployment nginx nginx=nginx:1.16 --all`
 * Modifico el fichero deployment.yaml y ejecuto:
-        kubectl apply -f deployment.yaml
+    * `kubectl apply -f deployment.yaml`
 * `kubectl edit deployment nginx`
 
 Actualización t rollout de la aplicación:
