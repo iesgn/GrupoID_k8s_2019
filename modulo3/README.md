@@ -67,6 +67,8 @@ También podemos visualizar los valores de los labels como una nueva columna:
   
     kubectl exec mc1 -c 2nd -- /bin/cat /html/index.html
 
+    kubectl port-forward mc1 8080:80
+
 ## Ejemplo 3: ReplicaSet
 
 Creamos el ReplicaSet:
