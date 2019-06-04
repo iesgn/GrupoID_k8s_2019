@@ -158,13 +158,13 @@ Vamos a desplegar la aplicación mediawiki:
 Comprobamos el historial de actualizaciones y desplegamos una nueva versión:
 
     kubectl rollout history deployment/mediawiki
-    kubectl set image deployment/mediawiki mediawiki=mediawiki:1.27 --all
+    kubectl set image deployment/mediawiki mediawiki=mediawiki:1.27 --all --record
     kubectl get all
 
 Ahora vamos a deplegar una versión que da un error (versión no existe). ¿Poedemos volver al despliegue anterior?
 
     kubectl rollout history deployment/mediawiki
-    kubectl set image deployment/mediawiki mediawiki=mediawiki:2 --all
+    kubectl set image deployment/mediawiki mediawiki=mediawiki:2 --all --record
     kubectl rollout undo deployment/mediawiki
     kubectl get all
 
