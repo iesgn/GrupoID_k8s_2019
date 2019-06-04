@@ -4,7 +4,7 @@
 
 Para crear el pod desde el fichero yaml:
 
-    kubectl create -f nginx.yaml
+    kubectl create -f pod.yaml
 
 Y podemos ver que el pod se ha creado:
 
