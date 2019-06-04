@@ -131,7 +131,7 @@ Por ejemplo para hacer una actualización de la aplicación:
 
 Actualización y rollout de la aplicación:
 
-kubectl set image deployment nginx nginx=nginx:1.16 --all
+    kubectl set image deployment nginx nginx=nginx:1.16 --all
 
 Comprobamos que se ha creado un nuevo ReplicaSet, y unos nuevos pods con la nueva versión de la imagen.
 
