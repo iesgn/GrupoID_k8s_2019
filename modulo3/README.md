@@ -127,7 +127,7 @@ Por ejemplo para hacer una actualización de la aplicación:
     * `kubectl apply -f deployment.yaml`
 * `kubectl edit deployment nginx`
 
-Actualización t rollout de la aplicación:
+Actualización y rollout de la aplicación:
 
 kubectl set image deployment nginx nginx=nginx:1.16 --all
 
@@ -168,7 +168,8 @@ Ahora vamos a deplegar una versión que da un error (versión no existe). ¿Poed
 
 ## Ejemplo 6: guestbook (parte 1)
 
-
-
+    kubectl create -f frontend-deployment.yaml
+    kubectl create -f redis-master-deployment.yaml
+    kubectl create -f redis-slave-deployment.yaml
 
 
