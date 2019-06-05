@@ -51,6 +51,8 @@ Creamos el despliegue y probamos el acceso:
     kubectl create -f mariadb-deployment-secret.yaml
     kubectl exec -it mariadb-deploy-secret-f946dddfd-kkmlb -- mysql -u root -p
 
+## Ejemplo 4: wordpress
+
 
 
 
