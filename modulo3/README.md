@@ -103,6 +103,11 @@ Cuando creamos un Deployment, se crea el ReplicaSet asociado y todos los pods qu
     kubectl create -f nginx-deployment.yaml
     kubectl get deploy,rs,pod
 
+
+También lo podríamos crear desde la línea de comandos:
+
+    kubectl create deploy nginx --image=nginx
+
 Como ocurría con los replicaSets los Deployment también se pueden escalar, aumentando o disminuyendo el número de pods asociados:
 
     kubectl scale deployment nginx --replicas=4
