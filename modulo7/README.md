@@ -25,7 +25,7 @@ Comprobamos la identidad de red estable: Vemos los hostnames y los nombres DNS a
     ...
     Address 1: 172.17.0.5 web-1.nginx.default.svc.cluster.local
 
-Creación  ordenada de pods: En un terminal observamos la creación de pods y en otro terminal eliminamos los pods
+Eliminación  ordenada de pods: En un terminal observamos la creación de pods y en otro terminal eliminamos los pods
 
     watch kubectl get pod
     kubectl delete pod -l app=nginx
