@@ -25,6 +25,7 @@ Creamos el PersistantVolumenClaim:
 Escribimos un fichero index.html en el directorio correspondiente al volumen:
 
     minikube ssh                           
+    $ sudo mkdir -p /data/pv1
     $ sudo sh -c "echo 'Hello from Kubernetes storage' > /data/pv1/index.html"
 
 Creamos un pod con el volumen
@@ -42,8 +43,11 @@ Accedemos el pod, instalamos curl y probamos a acceder al servidor web
     root@task-pv-pod:/# curl localhost
     Hello from Kubernetes storage
 
+También podemos hacer:
 
-## Ejemplo 2: Gestión dinámica de volúmenes
+    kubectl port-forward task-pv-pod 8080:80
+
+## Ejemplo 1: Gestión dinámica de volúmenes
 
 En minikube, tenemos un provisionador de almacenamiento local del tipo hostPath. 
 
