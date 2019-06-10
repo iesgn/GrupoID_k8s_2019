@@ -86,6 +86,8 @@ Podemos seleccionar los nodos en los que queremos que se ejecuten los pod por me
 
 ## Horizontal Pod AutoScaler
 
+    minikube addons enable metrics-server   
+ 
 Veamos un ejemplo: creamos un despliegue de una aplicación php y modificamos lo que va a reservar del CPU el pod (0,2 cores de CPU):
 
     kubectl create deploy php-apache --image=k8s.gcr.io/hpa-example
