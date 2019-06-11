@@ -57,7 +57,7 @@ trabajo y los iremos distribuyendo a medida que los necesitemos.
 	openssl x509 -req -in /opt/pki/${i}.csr -CA /etc/ssl/certs/ca.pem -CAcreateserial -CAkey /etc/ssl/private/ca.key -out /opt/pki/${i}.crt -days 500
 	done
 	
-	export SERVICIOS="kube-apiserver kube-scheduler kube-controller-manager kubelet kube-proxy"
+	export SERVICIOS="kube-apiserver kube-scheduler kube-controller-manager"
 	for i in $SERVICIOS; do
 	openssl genrsa -out /opt/pki/${i}.key 4096
 	openssl req -new -key /opt/pki/${i}.key -out /opt/pki/${i}.csr -subj "/CN=${i}"
@@ -69,3 +69,50 @@ Por último, repetimos lo mismo para el usuario admin, que utilizaremos para adm
     openssl genrsa -out /opt/pki/admin.key 4096
     openssl req -new -key /opt/pki/admin.key -out /opt/pki/admin.csr -subj "/CN=admin"
 	openssl x509 -req -in /opt/pki/admin.csr -CA /etc/ssl/certs/ca.pem -CAcreateserial -CAkey /etc/ssl/private/ca.key -out /opt/pki/admin.crt -days 500 
+
+## Instalación de kubectl
+
+Siguiendo la instalación de binarios desde la documentación de kubernetes:
+
+    curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+    chmod +x ./kubectl
+	sudo mv ./kubectl /usr/local/bin/kubectl
+	
+## Kubeconfig
+
+Vamos a configurar un clúster, un usuario y un contexto para que el
+usuario admin pueda comunicarse posteriormente con el kube-apiserver.
+
+    kubectl config set-cluster curso \
+    --certificate-authority=/etc/ssl/certs/ca.pem --embed-certs=true \
+    --server=https://master
+	
+    kubectl config set-credentials admin \
+    --client-certificate=/opt/pki/admin.crt \
+    --client-key=/opt/pki/admin.key --embed-certs=true
+	
+	kubectl config set-context curso --cluster=curso --user=admin
+	
+	kubectl config use-context curso
+	
+Comprobamos la configuración correcta de todo con la instrucción:
+
+    kubectl config view
+	
+No solo para el usuario admin, también el resto de componete del
+master necesitan tener su propio fichero kubeconfig configurado para
+poder interactuar con el kube-apiserver, por lo que repetimos lo
+anterior para kube-scheduler y kube-controller-manager:
+
+    for i in kube-scheduler kube-controller-manager; do
+	kubectl config set-cluster curso \
+	--certificate-authority=/etc/ssl/certs/ca.pem --embed-certs=true \
+	--server=https://master --kubeconfig=/var/lib/${i}/kubeconfig
+	kubectl config set-credentials ${i} --client-certificate=/opt/pki/${i}.crt \
+	--client-key=/opt/pki/${i}.key --embed-certs=true \
+	--kubeconfig=/var/lib/${i}/kubeconfig
+	kubectl config set-context curso --cluster=curso --user=${i} \
+	--kubeconfig=/var/lib/${i}/kubeconfig
+	done
+	
+	
