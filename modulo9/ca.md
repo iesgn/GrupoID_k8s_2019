@@ -54,13 +54,13 @@ trabajo y los iremos distribuyendo a medida que los necesitemos.
 	for i in $NODOS; do
 	openssl genrsa -out /opt/pki/${i}.key 4096
 	openssl req -new -key /opt/pki/${i}.key -out /opt/pki/${i}.csr -subj "/CN=${i}"
-	openssl x509 -req -in /opt/pki/${i}.csr -CA /etc/ssl/certs/ca.pem -CAkey /etc/ssl/private/ca.key -out /opt/pki/${i}.crt -days 500
+	openssl x509 -req -in /opt/pki/${i}.csr -CA /etc/ssl/certs/ca.pem -CAcreateserial -CAkey /etc/ssl/private/ca.key -out /opt/pki/${i}.crt -days 500
 	done
 	
 	export SERVICIOS="kube-apiserver kube-scheduler kube-controller-manager kubelet kube-proxy"
 	for i in $SERVICIOS; do
 	openssl genrsa -out /opt/pki/${i}.key 4096
 	openssl req -new -key /opt/pki/${i}.key -out /opt/pki/${i}.csr -subj "/CN=${i}"
-	openssl x509 -req -in /opt/pki/${i}.csr -CA /etc/ssl/certs/ca.pem -CAkey /etc/ssl/private/ca.key -out /opt/pki/${i}.crt -days 500
+	openssl x509 -req -in /opt/pki/${i}.csr -CA /etc/ssl/certs/ca.pem -CAcreateserial -CAkey /etc/ssl/private/ca.key -out /opt/pki/${i}.crt -days 500
 	done
 
