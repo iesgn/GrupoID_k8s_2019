@@ -20,9 +20,11 @@ al grupo ssl-cert.
 ### Creación del grupo ssl-cert
 
     for i in $NODOS; do
-      ssh $i addgroup --gid 54 ssl-cert
-      ssh $i -R chgrp ssl-cert /etc/ssl/private
-	  ssh $i chmod 750 /etc/ssh/private
+	ssh $i <<EOF
+    addgroup --gid 54 ssl-cert
+    chgrp -R ssl-cert /etc/ssl/private
+    chmod 750 /etc/ssh/private
+	EOF
     done
 	
 ### Creación de la entidad certificadora
@@ -30,16 +32,35 @@ al grupo ssl-cert.
 En el modo master:
 
     openssl genrsa -out /etc/ssl/private/ca.key 4096
-	chmod 0400 /etc/ssl/private/ca.key	
 	openssl req -x509 -new -nodes -key /etc/ssl/private/ca.key -sha256 -days 1024 -out /usr/local/share/ca-certificates/ca.crt -subj "/CN=ca"
 	update-ca-certificates
 	
 En el resto de nodos se copia el certicado ca.crt y se pone en la
 misma ubicación:
 
-    scp /usr/local/share/ca-certificates/ca.crt worker1:/usr/local/share/ca-certificates/ca.crt
-	ssh worker1 update-ca-certificates
-    scp /usr/local/share/ca-certificates/ca.crt worker2:/usr/local/share/ca-certificates/ca.crt
-	ssh worker2 update-ca-certificates
+    for i in $WORKERS; do
+	scp /usr/local/share/ca-certificates/ca.crt $i:/usr/local/share/ca-certificates/ca.crt
+	ssh $i update-ca-certificates
+	done
+
+### Creación de los certificados para todos los equipos y servicios
+
+No solo los equipos, sino los diferentes servicios de kubernetes
+utilizar un certificado para autenticarse, por lo que crearemos
+certificados x509 para todos ellos, los ubicaremos en un directorio de
+trabajo y los iremos distribuyendo a medida que los necesitemos.
+
+    mkdir /opt/pki
+	for i in $NODOS; do
+	openssl genrsa -out /opt/pki/${i}.key 4096
+	openssl req -new -key /opt/pki/${i}.key -out /opt/pki/${i}.csr "/CN=${i}"
+	openssl x509 -req -in /opt/pki/${i}.csr -CA /etc/ssl/certs/ca.pem -CAkey /etc/ssl/private/ca.key -out /opt/pki/${i}.crt -days 500
+	done
 	
-	
+	export SERVICIOS="kube-apiserver kube-scheduler kube-controller-manager kubelet kube-proxy"
+	for i in $SERVICIOS; do
+	openssl genrsa -out /opt/pki/${i}.key 4096
+	openssl req -new -key /opt/pki/${i}.key -out /opt/pki/${i}.csr "/CN=${i}"
+	openssl x509 -req -in /opt/pki/${i}.csr -CA /etc/ssl/certs/ca.pem -CAkey /etc/ssl/private/ca.key -out /opt/pki/${i}.crt -days 500
+	done
+

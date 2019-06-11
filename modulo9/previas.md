@@ -63,6 +63,7 @@ Ejecutamos como root:
 	sed -i '1 i net.ipv4.ip_forward = 1' /etc/sysctl.conf
 	sed -i '1 i net.ipv4.conf.all.forwarding = 1' /etc/sysctl.conf
 	sed -i '1 i net.bridge.bridge-nf-call-iptables = 1' /etc/sysctl.conf
+	sysctl -p /etc/sysctl.conf
 	EOF
 	done
 
