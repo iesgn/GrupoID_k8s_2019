@@ -18,14 +18,6 @@ final.
 * worker1: 10.0.0.2/24
 * worker2: 10.0.0.3/24
 
-Por simplicidad, los nodos utilizarán resolución estática entre ellos,
-por lo que habrá que adaptar convenientemente los ficheros /etc/hosts
-incluyen en todos las entradas:
-
-    10.0.0.1 master
-	10.0.0.2 worker1
-	10.0.0.3 worker2
-
 Para agilizar la instalación se supone que es posible acceder desde el
 nodo master a los workers a través de ssh, para lo cual es
 recomendable crear una clave ssh y compartirla con los otros nodos:
@@ -51,6 +43,33 @@ aparecer la línea:
 
     administrador    ALL=(ALL:ALL) ALL
 
+## Lista de nodos
+
+Vamos a utilizar durante la instalación varios pasos que se van a dar
+en todos los nodos o en todos los workers, para lo que es cómodo
+definir las variables de entorno:
+
+    export NODOS="master worker1 worker2"
+	export WORKERS="worker1 worker2"
+
+Por simplicidad, los nodos utilizarán resolución estática entre ellos,
+por lo que habrá que adaptar convenientemente los ficheros /etc/hosts
+incluyen en todos las entradas:
+
+    10.0.0.1 master
+	10.0.0.2 worker1
+	10.0.0.3 worker2
+
+Podemos simplemente ejecutar:
+
+    for i in $NODOS; do
+	   cat >> /etc/hosts <<EOF
+	   10.0.0.1 master
+	   10.0.0.2 worker1
+	   10.0.0.3 worker2
+	   EOF
+    done
+    
 ## Red de kubernetes
 
 Vamos a utilizar una red tipo CNI con flannel con las siguientes

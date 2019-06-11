@@ -19,8 +19,11 @@ al grupo ssl-cert.
 
 ### Creación del grupo ssl-cert
 
-    sudo addgroup --gid 54 ssl-cert
-	chgrp ssl-cert /etc/ssl/private
+    for i in $NODOS; do
+      ssh $i addgroup --gid 54 ssl-cert
+      ssh $i -R chgrp ssl-cert /etc/ssl/private
+	  ssh $i chmod 750 /etc/ssh/private
+    done
 	
 ### Creación de la entidad certificadora
 
