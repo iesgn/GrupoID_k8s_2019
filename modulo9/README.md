@@ -22,9 +22,34 @@ Por simplicidad, los nodos utilizarán resolución estática entre ellos,
 por lo que habrá que adaptar convenientemente los ficheros /etc/hosts
 incluyen en todos las entradas:
 
-10.0.0.1 master
-10.0.0.2 worker1
-10.0.0.3 worker2
+    10.0.0.1 master
+	10.0.0.2 worker1
+	10.0.0.3 worker2
+
+Para agilizar la instalación se supone que es posible acceder desde el
+nodo master a los workers a través de ssh, para lo cual es
+recomendable crear una clave ssh y compartirla con los otros nodos:
+
+    ssh-keygen -t ecdsa
+	ssh-copy-id -i ~/.ssh/id_ecdsa.pub 10.0.0.2
+	ssh-copy-id -i ~/.ssh/id_ecdsa.pub 10.0.0.3
+
+Por si necesitamos acceder como root, copiamos las claves autorizadas
+en cada worker al directorio .ssh de root:
+
+    sudo cp ~/.ssh/authorized_keys /root/.ssh/
+	
+Y en el master copiamos las claves pública y privada:
+
+    sudo cp ~/.ssh/id_ecdsa* /root/.ssh/
+	
+## Configuración de sudo sin contraseña
+
+En este despliegue y por sencillez y facilidad es conveniente por
+facilidad que el usuario, por lo que en el fichero /etc/sudores deberá
+aparecer la línea:
+
+    administrador    ALL=(ALL:ALL) ALL
 
 ## Red de kubernetes
 
