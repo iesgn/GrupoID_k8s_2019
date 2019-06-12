@@ -64,11 +64,13 @@ trabajo y los iremos distribuyendo a medida que los necesitemos.
 	openssl x509 -req -in /opt/pki/${i}.csr -CA /etc/ssl/certs/ca.pem -CAcreateserial -CAkey /etc/ssl/private/ca.key -out /opt/pki/${i}.crt -days 500
 	done
 
-Por último, repetimos lo mismo para el usuario admin, que utilizaremos para administrar el clúster de kubernetes:
+Por último, repetimos lo mismo para el usuario admin (que hay que
+incluir en O=system:masters para que tenga todos los privilegios), que
+utilizaremos para administrar el clúster de kubernetes:
 
     openssl genrsa -out /opt/pki/admin.key 4096
-    openssl req -new -key /opt/pki/admin.key -out /opt/pki/admin.csr -subj "/CN=admin"
-	openssl x509 -req -in /opt/pki/admin.csr -CA /etc/ssl/certs/ca.pem -CAcreateserial -CAkey /etc/ssl/private/ca.key -out /opt/pki/admin.crt -days 500 
+    openssl req -new -key /opt/pki/admin.key -out /opt/pki/admin.csr -subj "/CN=admin/O=system:masters"
+    openssl x509 -req -in /opt/pki/admin.csr -CA /etc/ssl/certs/ca.pem -CAcreateserial -CAkey /etc/ssl/private/ca.key -out /opt/pki/admin.crt -days 500 
 
 ## Instalación de kubectl
 
