@@ -61,3 +61,8 @@ equipo creamos una unidad de systemd en
 	[Install]
 	WantedBy=multi-user.target
 
+Para que este servicio esté habilitado al reiniciar el nodo habrá que
+indicárselo a systemd:
+
+    systemctl enable kube-apiserver
+	
