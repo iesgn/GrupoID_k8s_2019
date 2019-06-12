@@ -34,3 +34,9 @@ Y modificamos los siguientes parámetros del fichero /etc/default/etcd:
 	ETCD_TRUSTED_CA_FILE="/etc/ssl/certs/ca.pem"
 	
 Reinicamos etcd y comprobamos que funciona correctamente.
+
+El servicio etcd no está habilitado por defecto, por lo que debemos
+asegurarnos que lo esté para que funcione correctamente al reiniciar
+el nodo:
+
+    systemctl enable etcd.service
